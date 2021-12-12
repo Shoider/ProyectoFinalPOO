@@ -7,6 +7,7 @@ package com.mycompany.projectopoo;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -183,7 +184,7 @@ public class Modulos{
                 int a1 = rand.nextInt(street.size()-1);
                 int a2 = rand.nextInt(1,99);
                 int a3 = rand.nextInt(zipCode.size()-1);
-                salida.println((String)street.get(a1)+" #"+a2+", "+(String)colonia.get(a3)+", "+(String)municipio.get(a3)+", "+(String)zipCode.get(a3)+", Ciudad de México, CDMX.");
+                salida.println((String)street.get(a1)+" #"+a2+", "+(String)colonia.get(a3)+", "+(String)municipio.get(a3)+", "+(String)zipCode.get(a3)+", Ciudad de México, México");
             }
             salida.close();
         } catch (IOException ex) {
@@ -249,7 +250,7 @@ public class Modulos{
             for (int i=0; i<500; i++){
                 int age = (int) edad.get(i);
                 if(age == 18){
-                    int a1 = rand.nextInt(5,10);  //Cuantas materias tiene aprobadas
+                    int a1 = 5;  //Cuantas materias tiene aprobadas
                     int registro[] = new int[a1];
                     for (int j = 0; j < a1; j++) {
                         registro[j] = j+1;
@@ -261,7 +262,7 @@ public class Modulos{
                     salida.println(temp);
                 }
                 if(age >= 19 && age <= 20){
-                    int a1 = rand.nextInt(10,20);
+                    int a1 = rand.nextInt(5,20);
                     int registro[] = new int[a1];
                     for (int j = 0; j < a1; j++) {
                         registro[j] = j+1;

@@ -16,12 +16,10 @@ import java.util.logging.Logger;
 public class Main {
     public static void main(String[] args){
         String[] tmpDatos = new String[1000];
-        boolean rep1 = true,rep2=true,ok;
-        int op1=0,op2=0;
-        Scanner teclado = new Scanner(System.in);
-        Scanner teclado2 = new Scanner(System.in);
-        System.out.println("\tINICIANDO...");
-        System.out.println("\nGenerando Base De Datos...");
+        boolean rep1 = true,rep2=true,rep3=true,ok;
+        int op1=0,op2=0,op3=0,cantAlu=500;
+        System.out.println("\n\tINICIANDO...");
+        System.out.println("\nLeyendo archivos necesarios...");
         ok = validador();
         if(ok == true){ //Lee y crea documentos para la ejecucion
             Modulos ini = new Modulos();
@@ -36,43 +34,52 @@ public class Main {
             ini.baseDeDatos();
             ini.baseDeDirecciones();
             ini.regAcademicos();
+        System.out.println("Archivos leidos correctamente");
+        System.out.println("\nGenerando Base De Datos...");
         System.out.println("Base De Datos Generada");
+        System.out.println("----------------------------------\n");
         while(rep1 == true){
-            System.out.println("\n\tBIENVENIDO\n");
+            System.out.println("\tBIENVENIDO\n");
             System.out.println("Administracion Escolar");
             System.out.println("\nEscriba la opcion deseada");
             System.out.println("\n[1]\tMostrar Lista de Nombres y Numeros De Cuenta");
             System.out.println("\n[2]\tModificar registros");
             System.out.println("\n[3]\tGenerar numeros de inscripcion");
             System.out.println("\n[4]\tSalir\n");
-            op1=Integer.parseInt(teclado.next());
+            op1 = leerInt();
+            rep2 = true;
             op2 = 0;
-            rep2=true;
             switch (op1) {
                 case 1:
-                    System.out.println("\nMostrar Lista de Nombres y Numeros De Cuenta");
-                    System.out.println("N. Cuenta, Nombre, ApellidoP, ApellidoM, Edad");
+                    System.out.println("----------------------------------\n");
+                    System.out.println("Mostrar Lista de Nombres y Numeros De Cuenta");
+                    System.out.println("\nN. Cuenta, Nombre, ApellidoP, ApellidoM, Edad\n");
                     mostrarBaseDeDatos("BaseDeDatos.csv");
+                    System.out.println("----------------------------------\n");
                     break;
                 case 2:
+                    rep2=true;
                     while(rep2 == true){
+                        System.out.println("----------------------------------\n");
                         int busq,tmp;
-                        System.out.println("\nModificar registros");
+                        op3=0;
+                        System.out.println("Modificar registros");
                         System.out.println("\nEscriba la opcion deseada\n");
                         System.out.println("\n[1]\tBuscar Informacion Alumno");
                         System.out.println("\n[2]\tCrear Informacion Alumno");
                         System.out.println("\n[3]\tModificar Informacion Alumno");
                         System.out.println("\n[4]\tBorrar Informacion Alumno");
                         System.out.println("\n[5]\tSalir\n");
-                        op2=Integer.parseInt(teclado.next());
+                        op2 = leerInt();
                         switch (op2) {
                             case 1:
-                                System.out.println("\nBuscar Informacion Alumno");
+                                System.out.println("----------------------------------\n");
+                                System.out.println("Buscar Informacion Alumno");
                                 System.out.println("\nEscriba el numero de cuenta a buscar:\n");
-                                busq = Integer.parseInt(teclado.next());
+                                busq = leerInt();
                                 tmp = buscaPerfil(busq);
                                 if(tmp==-1){
-                                    System.out.println("Alumno no encontrado");
+                                    System.out.println("\nAlumno no encontrado");
                                 }
                                 else{
                                     String[] datos = leerLinea(tmp,"BaseDeDatos.csv");
@@ -90,21 +97,22 @@ public class Main {
                                 }
                                 break;
                             case 2:
-                                System.out.println("\nCrear Informacion Alumno");
+                                System.out.println("----------------------------------\n");
+                                System.out.println("Crear Informacion Alumno");
                                 System.out.println("\nNumero de Cuenta: ");
-                                String cuenta = teclado2.nextLine();
+                                int cuenta = leerInt();
                                 System.out.println("\nNombre: ");
-                                String nombre = teclado2.nextLine();
+                                String nombre = leerStr();
                                 System.out.println("\nApellido Paterno: ");
-                                String apellidoP = teclado2.nextLine();
+                                String apellidoP = leerStr();
                                 System.out.println("\nApellido Materno: ");
-                                String apellidoM = teclado2.nextLine();
+                                String apellidoM = leerStr();
                                 System.out.println("\nEdad: ");
-                                String age = teclado2.nextLine();
+                                int age = leerInt();
                                 System.out.println("\nDireccion: ");
-                                String direc = teclado2.nextLine();
+                                String direc = leerStr();
                                 System.out.println("\nNumero de Materias Aprobadas: ");
-                                int reg = Integer.parseInt(teclado.next());
+                                int reg = leerInt();
                                 //Escribir en base de datos
                                 String baseDatos = cuenta+","+nombre+","+apellidoP+","+apellidoM+","+age;   
                                 escribir(baseDatos,"BaseDeDatos.csv");
@@ -119,57 +127,237 @@ public class Main {
                                 mat = mat.replace("[","");
                                 mat = mat.replace("]","");
                                 escribir(mat,"RegistrosAcademicos.csv");
-                            case 3:
-                                System.out.println("\nModificar Informacion Alumno");
+                                System.out.println("\nRegistro Creado Correctamente");
+                                cantAlu += 1;
                                 break;
-                            case 4:
-                                System.out.println("\nBorrar Informacion Alumno");
-                                System.out.println("\nEscriba el numero de cuenta:\n");
-                                String del = teclado2.nextLine();
-                                busq = Integer.parseInt(del);
+                            case 3:
+                                rep3=true;
+                                System.out.println("----------------------------------\n");
+                                System.out.println("Modificar Informacion Alumno");
+                                System.out.println("\nEscriba el numero de cuenta a modificar\n");
+                                busq = leerInt();
                                 tmp = buscaPerfil(busq);
                                 if(tmp==-1){
+                                    System.out.println("\nAlumno no encontrado");
+                                }
+                                else{
+                                    String[] datos = leerLinea(tmp,"BaseDeDatos.csv");
+                                    String[] dir = leerLinea(tmp,"Direcciones.txt");
+                                    String[] reg2 = leerLinea(tmp,"RegistrosAcademicos.csv");
+                                    String direccion = Arrays.toString(dir);
+                                    direccion = direccion.replace("[","");
+                                    direccion = direccion.replace("]",""); 
+                                    Alumno persona = new Alumno(Integer.parseInt(datos[0]),datos[1],datos[2],datos[3],Integer.parseInt(datos[4]),direccion,reg2.length);
+
+                                    while(rep3==true){
+                                        System.out.println("----------------------------------\n");
+                                        System.out.println("Escriba la opcion deseada\n");
+                                        System.out.println("\n[1]\tModificar Numero de Cuenta");
+                                        System.out.println("\n[2]\tModificar Nombre");
+                                        System.out.println("\n[3]\tModificar Apellido Paterno");
+                                        System.out.println("\n[4]\tModificar Apellido Materno");
+                                        System.out.println("\n[5]\tModificar Edad");
+                                        System.out.println("\n[6]\tModificar Direccion");
+                                        System.out.println("\n[7]\tModificar Materias Aprobadas");
+                                        System.out.println("\n[8]\tSalir\n");
+                                        op3 = leerInt();
+                                        System.out.println(op3);
+                                        int num;
+                                        String str;
+                                        switch (op3) {
+                                            case 1:
+                                                System.out.println("----------------------------------\n");
+                                                System.out.println("Modificar Numero de Cuenta\n");
+                                                System.out.println("Nuevo valor: ");
+                                                num = leerInt();
+                                                persona.setNumCuenta(num);
+                                                System.out.println("\nDato Registrado Correctamente");
+                                                break;
+                                            case 2:
+                                                System.out.println("----------------------------------\n");
+                                                System.out.println("Modificar Nombre\n");
+                                                System.out.println("Nuevo valor: ");
+                                                str = leerStr();
+                                                persona.setNombre(str);
+                                                break;
+                                            case 3:
+                                                System.out.println("----------------------------------\n");
+                                                System.out.println("Modificar Apellido Paterno\n");
+                                                System.out.println("Nuevo valor: ");
+                                                str = leerStr();
+                                                persona.setApellidoP(str);
+                                                break;
+                                            case 4:
+                                                System.out.println("----------------------------------\n");
+                                                System.out.println("Modificar Apellido Materno\n");
+                                                System.out.println("Nuevo valor: ");
+                                                str = leerStr();
+                                                persona.setApellidoM(str);
+                                                break;
+                                            case 5:
+                                                System.out.println("----------------------------------\n");
+                                                System.out.println("Modificar Edad\n");
+                                                System.out.println("Nuevo valor: ");
+                                                num = leerInt();
+                                                persona.setEdad(num);
+                                                System.out.println("\nDato Registrado Correctamente");
+                                                break;
+                                            case 6:
+                                                System.out.println("----------------------------------\n");
+                                                System.out.println("Modificar Direccion\n");
+                                                System.out.println("Nuevo valor: ");
+                                                str = leerStr();
+                                                persona.setDireccion(str);
+                                                break; 
+                                            case 7:
+                                                System.out.println("----------------------------------\n");
+                                                System.out.println("Modificar Materias Aprobadas\n");
+                                                System.out.println("Nuevo valor: ");
+                                                num = leerInt();
+                                                persona.setMaterias(num);
+                                                System.out.println("\nDato Registrado Correctamente");
+                                                break;
+                                             case 8:
+                                                System.out.println("----------------------------------\n");
+                                                System.out.println("Salir");
+                                                System.out.println("----------------------------------\n");
+                                                rep3=false;
+                                                break;   
+                                            default:
+                                                System.out.println("----------------------------------\n");
+                                                System.out.println("Opcion no valida");
+                                                System.out.println("----------------------------------\n");
+                                        }
+                                    }
+                                    
+                                    sobrescribir(tmp,persona.obtenerDatos(),"BaseDeDatos.csv");
+                                    sobrescribir(tmp,persona.obtenerDireccion(),"Direcciones.txt");
+                                    System.out.println("Informacion guardada");
+                                    //Escribir Materias
+                                    String mate[] = new String[persona.obtenerCreditos()];
+                                    for (int i = 0; i < persona.obtenerCreditos(); i++) {
+                                        mate[i] = i+1+"";
+                                    }
+                                    sobrescribir(tmp,mate,"RegistrosAcademicos.csv");
+                                }
+                                break;
+                            case 4:
+                                System.out.println("----------------------------------\n");
+                                System.out.println("Borrar Informacion Alumno");
+                                System.out.println("\nEscriba el numero de cuenta:\n");
+                                busq = leerInt();
+                                tmp = buscaPerfil(busq);
+                                if(tmp == -1){
                                     System.out.println("Alumno no encontrado");
                                 }
                                 else{
-                                    String[] datos2 = leerLinea(tmp,"BaseDeDatos.csv");
-                                    String[] dir2 = leerLinea(tmp,"Direcciones.txt");
-                                    String[] reg2 = leerLinea(tmp,"RegistrosAcademicos.csv");
-                                    borrar(del,datos2,"BaseDeDatos.csv");
-                                    borrar(del,dir2,"Direcciones.txt");
-                                    borrar(del,reg2,"RegistrosAcademicos.csv");
+                                    String[] borrar = {""};
+                                    sobrescribir(tmp,borrar,"BaseDeDatos.csv");
+                                    sobrescribir(tmp,borrar,"Direcciones.txt");
+                                    sobrescribir(tmp,borrar,"RegistrosAcademicos.csv");
                                     System.out.println("Registro Eliminado");
                                 }
                                 break;
                             case 5:
-                                System.out.println("\nSalir\n");
+                                System.out.println("----------------------------------\n");
+                                System.out.println("Salir");
+                                System.out.println("----------------------------------\n");
                                 rep2=false;
                                 break;
                             default:
-                                System.out.println("\nOpcion no valida");
+                                System.out.println("----------------------------------\n");
+                                System.out.println("Opcion no valida");
+                                System.out.println("----------------------------------\n");
                                 //throw new AssertionError();
                         }
                     }
                     break;
                 case 3:
-                    System.out.println("\nGenerar numeros de inscripcion");
-                    
+                    System.out.println("----------------------------------\n");
+                    System.out.println("Generando numeros de inscripcion...\n");
+                    crearArchivoVacio("HistorialAcademico.csv");    //Evita errores
+                    crearArchivoVacio("NumeroDeInscripcion.csv");
+                    int[] creditos = creditosMaterias();
+                    double [][] lista = new double [cantAlu][2];
+                    int numeroOrdenado = 1;
+                    for (int i = 0; i < cantAlu; i++) {
+                        String[] reg = leerLinea(i,"RegistrosAcademicos.csv");
+                        String valir = Arrays.toString(reg);
+                        //validar que existe registro
+                        if(valir.length() >= 3){
+                            String[] dato = leerLinea(i,"BaseDeDatos.csv");
+                            Alumno generador = new Alumno(reg.length,Integer.parseInt(dato[4]));
+                            escribir(generarHistorial(generador.getEdad(),generador.getMaterias(),creditos),"HistorialAcademico.csv");
+                        }
+                    }
+                    for (int i = 0; i < cantAlu; i++) {     //Generar numero de inscripcion
+                        String[] datosParaNumero = leerLinea(i,"HistorialAcademico.csv");
+                        String[] dato = leerLinea(i,"BaseDeDatos.csv");
+                        //System.out.println(Integer.parseInt(dato[0])+Integer.parseInt(datosParaNumero[0])+Integer.parseInt(datosParaNumero[1])+Integer.parseInt(datosParaNumero[2])+Integer.parseInt(datosParaNumero[3])+Integer.parseInt(datosParaNumero[4]));
+                        Alumno inscripcion = new Alumno(Integer.parseInt(dato[0]),Integer.parseInt(datosParaNumero[0]),Integer.parseInt(datosParaNumero[1]),Integer.parseInt(datosParaNumero[2]),Integer.parseInt(datosParaNumero[3]),Float.parseFloat(datosParaNumero[4]));
+                        inscripcion.setNum(num(inscripcion.getMaterias(),inscripcion.getSemestre(),inscripcion.getCreditos(),inscripcion.getCredSemestre(),inscripcion.getPromedio()));
+                        //System.out.println("Numero de cuenta: "+inscripcion.getNumCuenta()+" Aprobadas: "+inscripcion.getMaterias()+" Inscritas: "+inscripcion.getSemestre()+" Creditos: "+inscripcion.getCreditos()+" Creditos Semestre: "+inscripcion.getCredSemestre()+" Promedio: "+inscripcion.getPromedio()+" Num: "+inscripcion.getNum());
+                        lista [i][0] = inscripcion.getNumCuenta();
+                        lista [i][1] = inscripcion.getNum();
+                    }
+                    ordenarNumeros(lista,2);    //Ordenamos la lista de numeros de inscripcion
+                    for (int i = cantAlu-1; i >=0; i--) {
+                        int numeroCuenta = (int) lista[i][0];
+                        String linea = numeroOrdenado+","+numeroCuenta+","+lista[i][1];
+                        escribir(linea,"NumeroDeInscripcion.csv");
+                        numeroOrdenado += 1;    //Numero en orden de inscripcion
+                    }
+                    System.out.println("Numeros de inscripcion generados con exito\n");
+                    System.out.println("Archivo generado: 'NumeroDeInscripcion.csv'");
+                    System.out.println("----------------------------------\n");
                     break;
                 case 4:
-                    System.out.println("\nSalir");
+                    System.out.println("----------------------------------\n");
+                    System.out.println("Salir");
                     System.out.println("\nGuardando base de datos...");
                     System.out.println("\nCERRANDO...\n\n");
                     rep1 = false;
+                    System.out.println("----------------------------------");
                     break;
                 default:
-                    System.out.println("\nOpcion no valida");
+                    System.out.println("----------------------------------\n");
+                    System.out.println("Opcion no valida\n");
+                    System.out.println("----------------------------------\n");
                     //throw new AssertionError();
             }
         }
-        }else{
-            System.out.println("\nERROR...");
+        } else{
+            System.out.println("----------------------------------\n");
+            System.out.println("ERROR...");
             System.out.println("\nFaltan archivos ppara generar base de datos");
+            System.out.println("----------------------------------\n");
         }
+    }
+    
+    public static int leerInt(){
+        Scanner teclado = new Scanner(System.in);
+        int numero;
+        try {
+            numero = teclado.nextInt();
+            return numero;
+        } catch (InputMismatchException ex){
+            System.out.println("----------------------------------\n");
+            System.out.println("¡Cuidado! Solo puedes insertar números. \n");
+        }
+        return 0;
+    }
+    
+    public static String leerStr(){
+        Scanner teclado = new Scanner(System.in);
+        String texto;
+        try {
+            texto = teclado.nextLine();
+            return texto;
+        } catch (InputMismatchException ex){
+            System.out.println("----------------------------------\n");
+            System.out.println("¡Cuidado! Solo puedes insertar texto \n");
+        }
+        return "";
     }
 
     public static boolean validador(){
@@ -219,18 +407,17 @@ public class Main {
                 }
                 tmp += 1;
             }
-            System.out.println("");
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } finally {
             if (br != null) {
-            try {
-                br.close();
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }
         return -1;
@@ -263,7 +450,7 @@ public class Main {
                 }
             }
         }
-        return new String[]{"Default", "Default", "Default", "Default","Default","Default","Default"};
+        return new String[]{"Default","Default","Default","Default","Default","Default","Default"};
     }
     
     public static void mostrarBaseDeDatos(String archivo){
@@ -293,67 +480,257 @@ public class Main {
             }
         }
     }
+    
+    public static void crearArchivoVacio(String archivo){   //Crea un archivo sin nada
+        try {
+            FileWriter fw = new FileWriter(archivo);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter salida = new PrintWriter(bw);
+            salida.close();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
     public static void escribir(String datos, String archivo){
         try {
             FileWriter fw = new FileWriter(archivo, true);
             //fw.write(System.getProperty( "line.separator" ));
-            fw.write(datos);    
+            fw.write(datos+"\n");    
             fw.close();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
     }
     
-    public static void sobrescribir(String numCuenta, String[] anterior, String[] nuevo,String archivo){
-        BufferedReader file;
-        String old = Arrays.toString(anterior);
-        old = old.replace("[","");
-        old = old.replace("]",""); 
-        String nvo = Arrays.toString(anterior);
+    public static void sobrescribir(int renglon,String[] remp,String archivo) {
+        int cont = 0;
+        String nvo = Arrays.toString(remp);
         nvo = nvo.replace("[","");
         nvo = nvo.replace("]",""); 
         try {
-            file = new BufferedReader(new FileReader(archivo));
-            String line, input = "";
-            while((line = file.readLine()) != null){
-                if(line.contains(numCuenta))
-                    input += line.replaceAll(old,nvo+"\r\n");
-                else
-                    input += line+"\r\n";
+            BufferedReader file = new BufferedReader(new FileReader(archivo));
+            StringBuffer inputBuffer = new StringBuffer();
+            String line;
+
+            while ((line = file.readLine()) != null) {
+                if(cont == renglon){
+                    inputBuffer.append(nvo);
+                    inputBuffer.append('\n');
+                }
+                else{
+                    inputBuffer.append(line);
+                    inputBuffer.append('\n');
+                }
+                cont += 1;
             }
-            FileOutputStream fileOut = new FileOutputStream(archivo,true);
-            fileOut.write(input.getBytes());
-            fileOut.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex.getMessage());
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-    
-    public static void borrar(String numCuenta, String[] anterior, String archivo){
-        BufferedReader file; 
-        String old = Arrays.toString(anterior);
-        old = old.replace("[","");
-        old = old.replace("]",""); 
-        System.out.println(old);
-        try {
-            file = new BufferedReader(new FileReader(archivo));
-            String line, input = "";
-            while((line = file.readLine()) != null){
-                if(line.contains(numCuenta))
-                    input += line.replaceAll(old,"remplazamiento");
-                else
-                    input += line+"\r\n";
-            }
+            file.close();
+
             FileOutputStream fileOut = new FileOutputStream(archivo);
-            fileOut.write(input.getBytes());
+            fileOut.write(inputBuffer.toString().getBytes());
             fileOut.close();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static int[] creditosMaterias(){
+        int[] creditos = new int[50];
+        int i = 0;
+        try {
+            BufferedReader br;
+            FileReader fr = new FileReader("Materias.csv");
+            br = new BufferedReader(fr);
+            String linea = br.readLine();
+            //Leer varias lineas con ciclo
+            while(linea != null){
+                String[] datos = linea.split(",");
+                creditos[i] = Integer.parseInt (datos[2]);
+                linea = br.readLine();
+                i += 1;
+            }
+            br.close();
+            return creditos;
         } catch (FileNotFoundException ex) {
             System.out.println(ex.getMessage());
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
+        return creditos;
     }
     
+    public static String generarHistorial(int age, int materiasAprobadas, int[] creditos){
+        Random rand = new Random();
+        int inscritas=0,credObt=0,credSem=0;
+        String[] historial = new String[5];
+        float prom = rand.nextFloat(5, 10);
+        for (int i = 0; i < materiasAprobadas; i++) {
+            credObt += creditos[i];
+        }
+        if(age == 18){
+            for (int i = 0; i < 5; i++) {  //Calcular creditos del semestre 1
+                credSem += creditos[i];
+            }
+            inscritas = 5;  //Es de primer semestre
+        }
+        if(age == 19){
+            int semestre = rand.nextInt(1,3);   //Calcula en que semestre esta 2-4
+            if(semestre == 1){  //Semestre 2
+                for (int i = 0; i < 10; i++) {  //Calcular creditos del semestre
+                    credSem += creditos[i];
+                }
+            }
+            if(semestre == 2){  //Semestre 3
+                for (int i = 0; i < 15; i++) {  //Calcular creditos del semestre
+                    credSem += creditos[i];
+                }
+            }
+            if(semestre == 3){  //Semestre 4
+                for (int i = 0; i < 20; i++) {  //Calcular creditos del semestre
+                    credSem += creditos[i];
+                }
+            }
+            //Calcular materia inscritas alt
+            inscritas = rand.nextInt(materiasAprobadas,20);
+        }
+        if(age == 20){
+            int semestre = rand.nextInt(1,3);   //Calcula en que semestre esta 4-6
+            if(semestre == 1){  //Semestre 4
+                for (int i = 0; i < 20; i++) {  //Calcular creditos del semestre
+                    credSem += creditos[i];
+                }
+            }
+            if(semestre == 2){  //Semestre 5
+                for (int i = 0; i < 25; i++) {  //Calcular creditos del semestre
+                    credSem += creditos[i];
+                }
+            }
+            if(semestre == 3){  //Semestre 6
+                for (int i = 0; i < 30; i++) {  //Calcular creditos del semestre
+                    credSem += creditos[i];
+                }
+            }
+            //Calcular materia inscritas alt
+            inscritas = rand.nextInt(materiasAprobadas,30);
+        }
+        if(age == 21){
+            int semestre = rand.nextInt(1,3);   //Calcula en que semestre esta 6-8
+            if(semestre == 1){  //Semestre 6
+                for (int i = 0; i < 30; i++) {  //Calcular creditos del semestre
+                    credSem += creditos[i];
+                }
+            }
+            if(semestre == 2){  //Semestre 7
+                for (int i = 0; i < 35; i++) {  //Calcular creditos del semestre
+                    credSem += creditos[i];
+                }
+            }
+            if(semestre == 3){  //Semestre 8
+                for (int i = 0; i < 40; i++) {  //Calcular creditos del semestre
+                    credSem += creditos[i];
+                }
+            }
+            //Calcular materia inscritas alt
+            inscritas = rand.nextInt(materiasAprobadas,40);
+        }
+        if(age == 22){
+            int semestre = rand.nextInt(1,3);   //Calcula en que semestre esta 8-10
+            if(semestre == 1){  //Semestre 8
+                for (int i = 0; i < 40; i++) {  //Calcular creditos del semestre
+                    credSem += creditos[i];
+                }
+            }
+            if(semestre == 2){  //Semestre 9
+                for (int i = 0; i < 45; i++) {  //Calcular creditos del semestre
+                    credSem += creditos[i];
+                }
+            }
+            if(semestre == 3){  //Semestre 10
+                for (int i = 0; i < 50; i++) {  //Calcular creditos del semestre
+                    credSem += creditos[i];
+                }
+            }
+            //Calcular materia inscritas alt
+            inscritas = rand.nextInt(materiasAprobadas,50);
+        }
+        if(age == 23){
+            //Semestre 10
+            for (int i = 0; i < 50; i++) {  //Calcular creditos del semestre
+                credSem += creditos[i];
+            }
+            //Calcular materia inscritas alt
+            inscritas = rand.nextInt(materiasAprobadas,60);
+        }
+        if(age == 24){
+            //Semestre 10
+            for (int i = 0; i < 50; i++) {  //Calcular creditos del semestre
+                credSem += creditos[i];
+            }
+            //Calcular materia inscritas alt
+            inscritas = rand.nextInt(materiasAprobadas,65);
+        }
+        if(age == 25){
+            //Semestre 10
+            for (int i = 0; i < 50; i++) {  //Calcular creditos del semestre
+                credSem += creditos[i];
+            }
+            //Calcular materia inscritas alt
+            inscritas = rand.nextInt(materiasAprobadas,70);
+        }
+        if(age == 26){
+            //Semestre 10
+            for (int i = 0; i < 50; i++) {  //Calcular creditos del semestre
+                credSem += creditos[i];
+            }
+            //Calcular materia inscritas alt
+            inscritas = rand.nextInt(materiasAprobadas,75);
+        }
+        if(age == 27){
+            //Semestre 10
+            for (int i = 0; i < 50; i++) {  //Calcular creditos del semestre
+                credSem += creditos[i];
+            }
+            //Calcular materia inscritas alt
+            inscritas = rand.nextInt(materiasAprobadas,80);
+        }
+        //Guardar valores
+        historial[0] = String.valueOf(materiasAprobadas);    // *
+        historial[1] = String.valueOf(inscritas);    //materias inscritas
+        historial[2] = String.valueOf(credObt);      //creditos de materias cursadas *
+        historial[3] = String.valueOf(credSem);      //creditos semestre
+        historial[4] = String.valueOf(prom);         //promedio
+        String resultante = Arrays.toString(historial);
+        resultante = resultante.replace("[","");
+        resultante = resultante.replace("]","");
+        resultante = resultante.replaceAll(" ","");
+        return resultante;
+    }
+    
+    //Numero de Inscripcion 
+    public static double num(int materias,int semestre,int creditos,int credSemestre,float promedio){
+        double numero,velocidad,escolaridad,a,b,c,d,e;
+        a = materias;
+        b = semestre;
+        c = creditos;
+        d = credSemestre;
+        e = promedio;
+        escolaridad = (a/b)*100;
+        velocidad = (c/d)*100;
+        numero = e * escolaridad * velocidad;
+        return numero;
+    }
+    
+    public static  void ordenarNumeros(double[][] array, final int columnNumber){
+        Arrays.sort(array, new Comparator<double[]>() {
+            @Override
+            public int compare(double[] first, double[] second) {
+               if(first[columnNumber-1] > second[columnNumber-1]) return 1;
+               else return -1;
+            }
+        })
+                ;
+    }
+
+
 }
